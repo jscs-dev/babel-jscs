@@ -46,7 +46,7 @@ function parseAndAssertSame(code, parser, parserName) {
     assertImplementsAST(esAST, acornAST);
   } catch(err) {
     err.message +=
-      "\n" + (parserName || 'esprima') + ":\n" +
+      "\n" + (parserName || "esprima") + ":\n" +
       util.inspect(esAST, {depth: err.depth}) +
       "\nbabel-jscs:\n" +
       util.inspect(acornAST, {depth: err.depth});

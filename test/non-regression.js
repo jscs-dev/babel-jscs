@@ -4,7 +4,7 @@ var Checker = require("jscs/lib/checker");
 function verifyAndAssertMessages(code, rules, expectedMessages) {
   var config = {
     esnext: true,
-    esprima: require.resolve('..')
+    esprima: require.resolve("..")
   };
   assign(config, rules);
 
