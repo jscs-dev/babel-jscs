@@ -1,0 +1,34 @@
+{
+  "name": "babel-jscs",
+  "version": "1.0.0",
+  "description": "",
+  "main": "index.js",
+  "repository": {
+    "type": "git",
+    "url": "https://github.com/jscs-dev/babel-jscs.git"
+  },
+  "dependencies": {
+    "babel-core": "^5.3.1",
+    "lodash.assign": "^3.1.0"
+  },
+  "scripts": {
+    "test": "mocha"
+  },
+  "author": "Henry Zhu <hi@henryzoo.com>",
+  "license": "MIT",
+  "bugs": {
+    "url": "https://github.com/jscs-dev/babel-jscs/issues"
+  },
+  "keywords": [
+    "babel-jscs",
+    "babel",
+    "jscs"
+  ],
+  "homepage": "https://github.com/jscs-dev/babel-jscs",
+  "devDependencies": {
+    "jscs": "^1.13.1",
+    "esprima": "^2.2.0",
+    "esprima-fb": "^15001.1.0-dev-harmony-fb",
+    "mocha": "^2.2.4"
+  }
+}

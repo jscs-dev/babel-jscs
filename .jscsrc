@@ -1,0 +1,72 @@
+{
+  "esprima": "./index",
+  "esnext": true,
+  "excludeFiles": [
+    "node_modules/**"
+  ],
+  "verbose": true,
+  "disallowKeywords": ["with"],
+  "disallowMixedSpacesAndTabs": true,
+  "disallowMultipleLineStrings": true,
+  "disallowNotOperatorsInConditionals": true,
+  "disallowNewlineBeforeBlockStatements": true,
+  "disallowSpaceAfterObjectKeys": true,
+  "disallowSpaceAfterPrefixUnaryOperators": [
+    "++", "--",
+    "+", "-",
+    "~",
+    "!"
+  ],
+  "disallowSpaceBeforeBinaryOperators": [","],
+  "disallowSpaceBeforePostfixUnaryOperators": [
+    "++", "--"
+  ],
+  "disallowSpacesInCallExpression": true,
+  "disallowSpacesInsideArrayBrackets": true,
+  "disallowSpacesInsideParentheses": true,
+  "disallowTrailingComma": true,
+  "disallowTrailingWhitespace": true,
+  "requireCommaBeforeLineBreak": true,
+  "requireLineFeedAtFileEnd": true,
+  "requireSpaceAfterBinaryOperators": [
+    "?", ":",
+    "+", "-", "/", "*", "%",
+    "==", "===", "!=", "!==",
+    ">", ">=", "<", "<=",
+    "&&", "||"
+  ],
+  "requireSpaceBeforeBinaryOperators": [
+    "?", ":",
+    "+", "-", "/", "*", "%",
+    "==", "===", "!=", "!==",
+    ">", ">=", "<", "<=",
+    "&&", "||"
+  ],
+  "requireSpaceBeforeKeywords": [
+    "else",
+    "while",
+    "catch"
+  ],
+  "requireSpaceAfterKeywords": [
+    "if", "else",
+    "for", "while", "do",
+    "switch",
+    "return",
+    "try"
+  ],
+  "requireSpaceBeforeBlockStatements": true,
+  "requireSpaceBetweenArguments": true,
+  "requireSpacesInConditionalExpression": {
+    "afterTest": true,
+    "beforeConsequent": true,
+    "afterConsequent": true,
+    "beforeAlternate": true
+  },
+  "requireSpacesInFunctionExpression": {
+    "beforeOpeningCurlyBrace": true,
+    "beforeOpeningRoundBrace": true
+  },
+  "requireSpacesInFunctionDeclaration": {
+    "beforeOpeningCurlyBrace": true
+  }
+}
