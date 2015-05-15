@@ -47,14 +47,76 @@ function parseAndAssertSame(code, parser, parserName) {
   } catch(err) {
     err.message +=
       "\n" + (parserName || "esprima") + ":\n" +
-      util.inspect(esAST, {depth: err.depth}) +
-      "\nbabel-jscs:\n" +
-      util.inspect(acornAST, {depth: err.depth});
+      util.inspect(esAST, {depth: err.depth, colors: true}) +
+      "\nbabel-eslint:\n" +
+      util.inspect(acornAST, {depth: err.depth, colors: true});
     throw err;
   }
 }
 
 describe("acorn-to-esprima", function () {
+  describe("templates", function () {
+    it("empty template string", function () {
+      parseAndAssertSame("``");
+    });
+
+    it("template string", function () {
+      parseAndAssertSame("`test`");
+    });
+
+    it("template string using $", function () {
+      parseAndAssertSame("`$`");
+    });
+
+    it("template string with expression", function () {
+      parseAndAssertSame("`${a}`");
+    });
+
+    it("template string with multiple expressions", function () {
+      parseAndAssertSame("`${a}${b}${c}`");
+    });
+
+    it("template string with expression and strings", function () {
+      parseAndAssertSame("`a${a}a`");
+    });
+
+    it("template string with binary expression", function () {
+      parseAndAssertSame("`a${a + b}a`");
+    });
+
+    it("tagged template", function () {
+      parseAndAssertSame("jsx`<Button>Click</Button>`");
+    });
+
+    it("tagged template with expression", function () {
+      parseAndAssertSame("jsx`<Button>Hi ${name}</Button>`");
+    });
+
+    it("tagged template with new operator", function () {
+      parseAndAssertSame("new raw`42`");
+    });
+
+    it("template with nested function/object", function () {
+      parseAndAssertSame("`outer${{x: {y: 10}}}bar${`nested${function(){return 1;}}endnest`}end`");
+    });
+
+    it("template with braces #96", function () {
+      parseAndAssertSame("if (a) { var target = `a:${webpackPort}`; } else { app.use(); }");
+    });
+
+    it("template also with braces #96", function () {
+      parseAndAssertSame(
+        "export default function f1() {" +
+          "function f2(foo) {" +
+            "const bar = 3;" +
+            "return `${foo} ${bar}`;" +
+          "}" +
+          "return f2;" +
+        "}"
+      );
+    });
+  });
+
   describe("jsx", function () {
     it("jsx expression", function () {
       parseAndAssertSame("<App />", esprimaFb, 'esprima-fb');
@@ -154,5 +216,21 @@ describe("acorn-to-esprima", function () {
       " * comment",
       " */"
     ].join("\n"));
+  });
+
+  it("null", function () {
+    parseAndAssertSame("null");
+  });
+
+  it("boolean", function () {
+    parseAndAssertSame("if (true) {} else if (false) {}");
+  });
+
+  it("regexp", function () {
+    parseAndAssertSame("/affix-top|affix-bottom|affix|[a-z]/");
+  });
+
+  it("regexp in a template string", function () {
+    parseAndAssertSame("`${/\\d/.exec(\"1\")[0]}`");
   });
 });

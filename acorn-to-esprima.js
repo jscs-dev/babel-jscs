@@ -36,7 +36,7 @@ exports.toToken = function (token) {
     token.type = "JSXIdentifier";
   } else if (type.keyword === "null") {
     token.type = "Null";
-  } else if (type.keyword === "false" || token.keyword === "true") {
+  } else if (type.keyword === "false" || type.keyword === "true") {
     token.type = "Boolean";
   } else if (type.keyword) {
     token.type = "Keyword";
@@ -48,6 +48,11 @@ exports.toToken = function (token) {
     token.value = JSON.stringify(token.value);
   } else if (type === tt.regexp) {
     token.type = "RegularExpression";
+    token.regex = {
+      pattern: token.value.pattern,
+      flags: token.value.flags
+    };
+    token.value = String(token.value.value);
   }
 
   return token;
@@ -58,8 +63,101 @@ exports.toAST = function (ast) {
   traverse(ast, astTransformVisitor);
 };
 
+exports.toTokens = function (tokens) {
+  // transform tokens to type "Template"
+  convertTemplateType(tokens);
+
+  return tokens.map(exports.toToken);
+};
+
 function isCompatTag(tagName) {
   return tagName && /^[a-z]|\-/.test(tagName);
+}
+
+function convertTemplateType(tokens) {
+  var startingToken    = 0;
+  var currentToken     = 0;
+  var numBraces        = 0;
+  var hasTemplateEnded = true;
+
+  function isBackQuote(token) {
+    return tokens[token].type === tt.backQuote;
+  }
+
+  function isTemplateStarter(token) {
+    return isBackQuote(token) ||
+           tokens[token].type === tt.braceR;
+  }
+
+  function isTemplateEnder(token) {
+    return isBackQuote(token) ||
+           tokens[token].type === tt.dollarBraceL;
+  }
+
+  // append the values between start and end
+  function createTemplateValue(start, end) {
+    var value = "";
+    while (start <= end) {
+      if (tokens[start].value) {
+        value += tokens[start].value;
+      } else if (tokens[start].type !== tt.template) {
+        value += tokens[start].type.label;
+      }
+      start++;
+    }
+    return value;
+  }
+
+  // create Template token
+  function replaceWithTemplateType(start, end) {
+    var templateToken = {
+      type: 'Template',
+      value: createTemplateValue(start, end),
+      range: [tokens[start].start, tokens[end].end],
+      loc: {
+        start: tokens[start].loc.start,
+        end: tokens[end].loc.end
+      }
+    }
+
+    // put new token in place of old tokens
+    tokens.splice(start, end - start + 1, templateToken);
+  }
+
+  function trackNumBraces(token) {
+    if (tokens[token].type === tt.braceL) {
+      numBraces++;
+    } else if (tokens[token].type === tt.braceR) {
+      numBraces--;
+    }
+  }
+
+  while (startingToken < tokens.length) {
+    // template start: check if ` or }
+    if (isTemplateStarter(startingToken) && numBraces === 0) {
+      currentToken = startingToken + 1;
+
+      // check if token after template start is "template"
+      if (currentToken >= tokens.length - 1 || tokens[currentToken].type !== tt.template) {
+        break;
+      }
+
+      // template end: find ` or ${
+      while (!isTemplateEnder(currentToken)) {
+        if (currentToken >= tokens.length - 1) {
+          break;
+        }
+        currentToken++;
+      }
+
+      hasTemplateEnded = isBackQuote(currentToken);
+      // template start and end found: create new token
+      replaceWithTemplateType(startingToken, currentToken);
+    } else if (!hasTemplateEnded) {
+      trackNumBraces(startingToken);
+    }
+    startingToken++;
+  }
 }
 
 var astTransformVisitor = {
@@ -93,11 +191,11 @@ var astTransformVisitor = {
       } else if (t.isFunctionExpression(node.declaration)) {
         node.declaration.type = "FunctionDeclaration";
       }
+    }
 
-      if (t.isFunctionDeclaration(node.declaration)) {
-        if (!node.declaration.defaults) {
-          node.declaration.defaults = [];
-        }
+    if (t.isFunctionDeclaration(node) || t.isFunctionExpression(node)) {
+      if (!node.defaults) {
+        node.defaults = [];
       }
     }
 
@@ -122,6 +220,25 @@ var astTransformVisitor = {
       node.type = "YieldExpression";
       node.delegate = node.all;
       delete node.all;
+    }
+
+    // template strings
+
+    if (t.isTemplateLiteral(node)) {
+      node.quasis.forEach(function (q) {
+        q.range[0] -= 1;
+        if (q.tail) {
+          q.range[1] += 1;
+        } else {
+          q.range[1] += 2;
+        }
+        q.loc.start.column -= 1;
+        if (q.tail) {
+          q.loc.end.column += 1;
+        } else {
+          q.loc.end.column += 2;
+        }
+      });
     }
   }
 };
