@@ -34,4 +34,20 @@ describe("verify", function () {
       []
     );
   });
+
+  it("flow type", function () {
+    verifyAndAssertMessages(
+      "type SomeNewType = any;",
+      {},
+      []
+    );
+  });
+
+  it("type cast expression", function () {
+    verifyAndAssertMessages(
+      "for (let a of (a: Array)) {}",
+      {},
+      []
+    );
+  });
 });

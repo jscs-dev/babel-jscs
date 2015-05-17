@@ -23,6 +23,7 @@ exports.toToken = function (token) {
              type === tt.relational || type === tt.bitShift ||
              type === tt.plusMin || type === tt.modulo ||
              type === tt.exponent || type === tt.prefix ||
+             type === tt.doubleColon ||
              type.isAssign) {
     token.type = "Punctuator";
     if (!token.value) token.value = type.label;
@@ -34,6 +35,8 @@ exports.toToken = function (token) {
     token.value = ">";
   } else if (type === tt.jsxName) {
     token.type = "JSXIdentifier";
+  } else if (type === tt.jsxText) {
+    token.type = "JSXText";
   } else if (type.keyword === "null") {
     token.type = "Null";
   } else if (type.keyword === "false" || type.keyword === "true") {
@@ -169,6 +172,10 @@ var astTransformVisitor = {
       node.computed = true;
       node.key = node.value = node.argument;
       delete node.argument;
+    }
+
+    if (t.isTypeCastExpression(node)) {
+      return node.expression;
     }
 
     if (t.isFlow(node)) {

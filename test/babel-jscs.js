@@ -100,8 +100,8 @@ describe("acorn-to-esprima", function () {
       parseAndAssertSame("`outer${{x: {y: 10}}}bar${`nested${function(){return 1;}}endnest`}end`");
     });
 
-    it("template with braces #96", function () {
-      parseAndAssertSame("if (a) { var target = `a:${webpackPort}`; } else { app.use(); }");
+    it("template with braces inside and outside of template string #96", function () {
+      parseAndAssertSame("if (a) { var target = `{}a:${webpackPort}{}}}}`; } else { app.use(); }");
     });
 
     it("template also with braces #96", function () {
@@ -132,6 +132,22 @@ describe("acorn-to-esprima", function () {
 
     it("jsx expression with a member expression as identifier", function () {
       parseAndAssertSame("<foo.bar />", esprimaFb, 'esprima-fb');
+    });
+
+    it("jsx expression with spread", function () {
+      parseAndAssertSame("var myDivElement = <div {...this.props} />;", esprimaFb, 'esprima-fb');
+    });
+
+    it("empty jsx text", function () {
+      parseAndAssertSame("<a></a>", esprimaFb, 'esprima-fb');
+    });
+
+    it("jsx text with content", function () {
+      parseAndAssertSame("<a>Hello, world!</a>", esprimaFb, 'esprima-fb');
+    });
+
+    it("nested jsx", function () {
+      parseAndAssertSame("<div>\n<h1>Wat</h1>\n</div>", esprimaFb, 'esprima-fb');
     });
   });
 
