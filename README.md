@@ -6,6 +6,8 @@
 
 **NOTE:** Please note that this is experimental and may have numerous bugs. It has been run against `ember.js` and `babel-core` with no errors (at the moment). If there's an issue, first check if you can reproduce with the regular parser (esprima) and the latest version.
 
+Rules related to quotes work work: `validateQuoteMarks` (Babel infers and transforms quotes to be consistent so you'll need to find another way to enforce this or turn off the parser and run it.)
+
 ## How does it work?
 
 JSCS allows custom parsers. This is great but some of the syntax nodes that Babel supports
@@ -30,9 +32,8 @@ $ npm install jscs babel-jscs // local
 {
   "esprima": "babel-jscs", // global
   "esprima": "./node_modules/babel-jscs", // local
-  "esnext": "true", // es6
   "verbose": "true", // prints out rule names
-  "preset": "airbnb"
+  "preset" : "airbnb"
 }
 ```
 

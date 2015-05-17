@@ -12,7 +12,8 @@
     "lodash.assign": "^3.1.0"
   },
   "scripts": {
-    "test": "mocha"
+    "test": "mocha",
+    "lint": "./node_modules/.bin/jscs ."
   },
   "author": "Henry Zhu <hi@henryzoo.com>",
   "license": "MIT",

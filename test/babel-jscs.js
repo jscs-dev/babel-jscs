@@ -1,5 +1,6 @@
 var babelJSCS = require("..");
 var esprima   = require("esprima");
+// testing with esprima-fb until esprima has jsx support
 var esprimaFb = require("esprima-fb");
 var util      = require("util");
 
@@ -119,35 +120,35 @@ describe("acorn-to-esprima", function () {
 
   describe("jsx", function () {
     it("jsx expression", function () {
-      parseAndAssertSame("<App />", esprimaFb, 'esprima-fb');
+      parseAndAssertSame("<App />", esprimaFb, "esprima-fb");
     });
 
     it("jsx expression with 'this' as identifier", function () {
-      parseAndAssertSame("<this />", esprimaFb, 'esprima-fb');
+      parseAndAssertSame("<this />", esprimaFb, "esprima-fb");
     });
 
     it("jsx expression with a dynamic attribute", function () {
-      parseAndAssertSame("<App foo={bar} />", esprimaFb, 'esprima-fb');
+      parseAndAssertSame("<App foo={bar} />", esprimaFb, "esprima-fb");
     });
 
     it("jsx expression with a member expression as identifier", function () {
-      parseAndAssertSame("<foo.bar />", esprimaFb, 'esprima-fb');
+      parseAndAssertSame("<foo.bar />", esprimaFb, "esprima-fb");
     });
 
     it("jsx expression with spread", function () {
-      parseAndAssertSame("var myDivElement = <div {...this.props} />;", esprimaFb, 'esprima-fb');
+      parseAndAssertSame("var myDivElement = <div {...this.props} />;", esprimaFb, "esprima-fb");
     });
 
     it("empty jsx text", function () {
-      parseAndAssertSame("<a></a>", esprimaFb, 'esprima-fb');
+      parseAndAssertSame("<a></a>", esprimaFb, "esprima-fb");
     });
 
     it("jsx text with content", function () {
-      parseAndAssertSame("<a>Hello, world!</a>", esprimaFb, 'esprima-fb');
+      parseAndAssertSame("<a>Hello, world!</a>", esprimaFb, "esprima-fb");
     });
 
     it("nested jsx", function () {
-      parseAndAssertSame("<div>\n<h1>Wat</h1>\n</div>", esprimaFb, 'esprima-fb');
+      parseAndAssertSame("<div>\n<h1>Wat</h1>\n</div>", esprimaFb, "esprima-fb");
     });
   });
 
@@ -164,19 +165,19 @@ describe("acorn-to-esprima", function () {
   });
 
   it("default import", function () {
-    parseAndAssertSame('import foo from "foo";');
+    parseAndAssertSame("import foo from \"foo\";");
   });
 
   it("import specifier", function () {
-    parseAndAssertSame('import { foo } from "foo";');
+    parseAndAssertSame("import { foo } from \"foo\";");
   });
 
   it("import specifier with name", function () {
-    parseAndAssertSame('import { foo as bar } from "foo";');
+    parseAndAssertSame("import { foo as bar } from \"foo\";");
   });
 
   it("import bare", function () {
-    parseAndAssertSame('import "foo";');
+    parseAndAssertSame("import \"foo\";");
   });
 
   it("export default class declaration", function () {
@@ -196,7 +197,7 @@ describe("acorn-to-esprima", function () {
   });
 
   it("export all", function () {
-    parseAndAssertSame('export * from "foo";');
+    parseAndAssertSame("export * from \"foo\";");
   });
 
   it("export named", function () {
