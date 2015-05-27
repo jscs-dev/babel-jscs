@@ -1,5 +1,6 @@
 var assign  = require("lodash.assign");
 var Checker = require("jscs/lib/checker");
+var util    = require("util");
 
 function verifyAndAssertMessages(code, rules, expectedMessages) {
   var config = {
@@ -14,7 +15,7 @@ function verifyAndAssertMessages(code, rules, expectedMessages) {
   var messages = checker.checkString(code);
 
   if (messages.getErrorCount() !== expectedMessages.length) {
-    throw new Error("Expected " + expectedMessages.length + " message(s), got " + messages.getErrorCount() + " " + JSON.stringify(messages));
+    throw new Error("Expected " + expectedMessages.length + " message(s), got " + messages.getErrorCount() + " " + util.inspect(messages.getErrorList()));
   }
 
   messages.getErrorList().forEach(function (message, i) {
@@ -47,6 +48,35 @@ describe("verify", function () {
     verifyAndAssertMessages(
       "for (let a of (a: Array)) {}",
       {},
+      []
+    );
+  });
+
+  it("doesn't error with a true option", function () {
+    verifyAndAssertMessages(
+      "var a = [1,2,3,];",
+      { "requireTrailingComma": true },
+      []
+    );
+  });
+
+  it("does error with a true option", function () {
+    verifyAndAssertMessages(
+      "var a = [1,2,3];",
+      { "requireTrailingComma": true },
+      [ "1:14 Missing comma before closing  bracket" ]
+    );
+  });
+
+  it("template with destructuring", function () {
+    verifyAndAssertMessages([
+      "module.exports = {",
+        "render() {",
+          "var {name} = this.props;",
+          "return Math.max(null, `Name: ${name}, Name: ${name}`);",
+        "}",
+      "};"].join("\n"),
+      { "comma-spacing": 1 },
       []
     );
   });

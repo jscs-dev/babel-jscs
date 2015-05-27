@@ -101,11 +101,11 @@ describe("acorn-to-esprima", function () {
       parseAndAssertSame("`outer${{x: {y: 10}}}bar${`nested${function(){return 1;}}endnest`}end`");
     });
 
-    it("template with braces inside and outside of template string #96", function () {
+    it("template with braces inside and outside of template string", function () {
       parseAndAssertSame("if (a) { var target = `{}a:${webpackPort}{}}}}`; } else { app.use(); }");
     });
 
-    it("template also with braces #96", function () {
+    it("template also with braces", function () {
       parseAndAssertSame(
         "export default function f1() {" +
           "function f2(foo) {" +
@@ -114,6 +114,19 @@ describe("acorn-to-esprima", function () {
           "}" +
           "return f2;" +
         "}"
+      );
+    });
+
+    it("template with destructuring", function () {
+      verifyAndAssertMessages([
+        "module.exports = {",
+          "render() {",
+            "var {name} = this.props;",
+            "return Math.max(null, `Name: ${name}, Name: ${name}`);",
+          "}",
+        "};"].join("\n"),
+        { "comma-spacing": 1 },
+        []
       );
     });
   });

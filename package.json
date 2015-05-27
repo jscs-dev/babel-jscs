@@ -8,12 +8,13 @@
     "url": "https://github.com/jscs-dev/babel-jscs.git"
   },
   "dependencies": {
-    "babel-core": "^5.3.1",
-    "lodash.assign": "^3.1.0"
+    "babel-core": "^5.4.7",
+    "lodash.assign": "^3.2.0"
   },
   "scripts": {
     "test": "mocha",
-    "lint": "./node_modules/.bin/jscs ."
+    "lint": "./node_modules/.bin/jscs .",
+    "travis": "npm test && npm run lint"
   },
   "author": "Henry Zhu <hi@henryzoo.com>",
   "license": "MIT",
@@ -30,6 +31,6 @@
     "jscs": "^1.13.1",
     "esprima": "^2.2.0",
     "esprima-fb": "^15001.1.0-dev-harmony-fb",
-    "mocha": "^2.2.4"
+    "mocha": "^2.2.5"
   }
 }
