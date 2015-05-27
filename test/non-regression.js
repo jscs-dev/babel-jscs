@@ -76,7 +76,7 @@ describe("verify", function () {
           "return Math.max(null, `Name: ${name}, Name: ${name}`);",
         "}",
       "};"].join("\n"),
-      { "comma-spacing": 1 },
+      {},
       []
     );
   });

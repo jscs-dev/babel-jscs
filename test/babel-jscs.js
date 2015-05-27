@@ -118,15 +118,13 @@ describe("acorn-to-esprima", function () {
     });
 
     it("template with destructuring", function () {
-      verifyAndAssertMessages([
+      parseAndAssertSame([
         "module.exports = {",
           "render() {",
             "var {name} = this.props;",
             "return Math.max(null, `Name: ${name}, Name: ${name}`);",
           "}",
-        "};"].join("\n"),
-        { "comma-spacing": 1 },
-        []
+        "};"].join("\n")
       );
     });
   });

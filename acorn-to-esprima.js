@@ -175,7 +175,7 @@ function convertTemplateType(tokens) {
 var astTransformVisitor = {
   noScope: true,
   exit: function (node, parent) {
-    if (t.isSpreadProperty(node)) {
+    if (this.isSpreadProperty()) {
       node.type = "Property";
       node.kind = "init";
       node.computed = true;
@@ -183,34 +183,35 @@ var astTransformVisitor = {
       delete node.argument;
     }
 
-    if (t.isRestElement(node)) {
+    if (this.isRestElement()) {
       return node.argument;
     }
 
     // flow
-    if (t.isTypeCastExpression(node)) {
+    if (this.isTypeCastExpression()) {
       return node.expression;
     }
 
-    if (t.isFlow(node)) {
+    if (this.isFlow()) {
       return this.remove();
     }
 
     // modules
 
-    if (t.isImportDeclaration(node)) {
+    if (this.isImportDeclaration()) {
       delete node.isType;
     }
 
-    if (t.isExportDeclaration(node)) {
-      if (t.isClassExpression(node.declaration)) {
+    if (this.isExportDeclaration()) {
+      var declar = this.get("declaration");
+      if (declar.isClassExpression()) {
         node.declaration.type = "ClassDeclaration";
-      } else if (t.isFunctionExpression(node.declaration)) {
+      } else if (declar.isFunctionExpression()) {
         node.declaration.type = "FunctionDeclaration";
       }
     }
 
-    if (t.isFunctionDeclaration(node) || t.isFunctionExpression(node)) {
+    if (this.isFunctionDeclaration() || this.isFunctionExpression()) {
       if (!node.defaults) {
         node.defaults = [];
       }
@@ -218,22 +219,22 @@ var astTransformVisitor = {
 
     // classes
 
-    if (t.isReferencedIdentifier(node, parent, { name: "super" })) {
+    if (this.isReferencedIdentifier({ name: "super" })) {
       return t.inherits(t.thisExpression(), node);
     }
 
-    if (t.isClassProperty(node)) {
+    if (this.isClassProperty()) {
       delete node.key;
     }
 
     // functions
 
-    if (t.isFunction(node)) {
+    if (this.isFunction()) {
       if (node.async) node.generator = true;
       delete node.async;
     }
 
-    if (t.isAwaitExpression(node)) {
+    if (this.isAwaitExpression()) {
       node.type = "YieldExpression";
       node.delegate = node.all;
       delete node.all;
@@ -241,7 +242,7 @@ var astTransformVisitor = {
 
     // template strings
 
-    if (t.isTemplateLiteral(node)) {
+    if (this.isTemplateLiteral()) {
       node.quasis.forEach(function (q) {
         q.range[0] -= 1;
         if (q.tail) {
