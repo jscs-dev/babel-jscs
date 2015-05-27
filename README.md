@@ -6,7 +6,7 @@
 
 **NOTE:** Please note that this is experimental and may have numerous bugs. It has been run against `ember.js` and `babel-core` with no errors (at the moment). If there's an issue, first check if you can reproduce with the regular parser (esprima) and the latest version.
 
-Rules related to quotes work work: `validateQuoteMarks` (Babel infers and transforms quotes to be consistent so you'll need to find another way to enforce this or turn off the parser and run it.)
+Rules related to quotes won't work: `validateQuoteMarks` (Babel infers and transforms quotes to be consistent so you'll need to find another way to enforce this or turn off the parser and run it.)
 
 ## How does it work?
 
@@ -20,8 +20,8 @@ columns is also retained so you can track down errors with ease.
 ### Install
 
 ```sh
-$ npm install -g jscs babel-jscs // global
-$ npm install jscs babel-jscs // local
+$ npm install -g jscs babel-jscs # global
+$ npm install jscs babel-jscs # local
 ```
 
 ### Setup
