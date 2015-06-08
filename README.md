@@ -6,7 +6,8 @@
 
 **NOTE:** Please note that this is experimental and may have numerous bugs. It has been run against `ember.js` and `babel-core` with no errors (at the moment). If there's an issue, first check if you can reproduce with the regular parser (esprima) and the latest version.
 
-Rules related to quotes won't work: `validateQuoteMarks` (Babel infers and transforms quotes to be consistent so you'll need to find another way to enforce this or turn off the parser and run it.)
+### Known Issues
+- `validateQuoteMarks`
 
 ## How does it work?
 
