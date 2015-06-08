@@ -1,5 +1,4 @@
 var acornToEsprima = require("./acorn-to-esprima");
-var traverse       = require("babel-core").traverse;
 var assign         = require("lodash.assign");
 var Module         = require("module");
 var parse          = require("babel-core").parse;
