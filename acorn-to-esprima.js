@@ -193,7 +193,7 @@ var astTransformVisitor = {
     }
 
     if (this.isFlow()) {
-      return this.remove();
+      return this.dangerouslyRemove();
     }
 
     // modules
