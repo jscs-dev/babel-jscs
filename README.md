@@ -4,10 +4,19 @@
 
 > Also check out the fantastic [babel-eslint](https://github.com/babel/babel-eslint) to lint using [ESLint](https://github.com/eslint/eslint). 
 
-**NOTE:** Please note that this is experimental and may have numerous bugs. It has been run against `ember.js` and `babel-core` with no errors (at the moment). If there's an issue, first check if you can reproduce with the regular parser (esprima) and the latest version.
+**NOTE:** Please note that this is experimental and may have numerous bugs. It has been run against `ember.js` and `babel-core` with no errors (at the moment).
 
 ### Known Issues
 - `validateQuoteMarks`
+
+### Issues
+> If there's an issue, first check if you can reproduce with the regular parser (esprima) and the latest version of jscs and babel-jscs.
+
+Include: `jscs` and `babel-jscs` version, code snippet/screenshot
+
+- See if the issue is a duplicate.
+- Check if the issue is reproducible with regular jscs.
+- Run jscs in `--verbose` mode to get the rule name(s) that have issues.
 
 ## How does it work?
 
@@ -45,14 +54,6 @@ Check out the [JSCS docs](http://jscs.info/rules.html) for all possible rules.
 ```sh
 $ jscs your-files-here
 ```
-
-### Issues
-Include: `jscs` and `babel-jscs` version, code snippet/screenshot
-
-- See if the issue is a duplicate.
-- Check if the issue is reproducible with regular jscs.
-- Run jscs in `--verbose` mode to get the rule name(s) that have issues.
-
 
 [travis-url]: https://travis-ci.org/jscs-dev/babel-jscs
 [travis-image]: https://travis-ci.org/jscs-dev/babel-jscs.svg?branch=master
