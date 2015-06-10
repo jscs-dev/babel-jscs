@@ -7,6 +7,7 @@
 **NOTE:** Please note that this is experimental and may have numerous bugs. It has been run against `ember.js` and `babel-core` with no errors (at the moment).
 
 ### Known Issues
+> **Only works on master right now** - `package.json`: `"jscs": "jscs-dev/node-jscs#master",`
 - `validateQuoteMarks`
 
 ### Issues

@@ -28,7 +28,7 @@
   ],
   "homepage": "https://github.com/jscs-dev/babel-jscs",
   "devDependencies": {
-    "jscs": "^1.13.1",
+    "jscs": "jscs-dev/node-jscs#master",
     "esprima": "^2.2.0",
     "esprima-fb": "^15001.1.0-dev-harmony-fb",
     "mocha": "^2.2.5"
