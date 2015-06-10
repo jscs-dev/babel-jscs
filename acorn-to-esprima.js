@@ -170,7 +170,7 @@ function convertTemplateType(tokens) {
 
 var astTransformVisitor = {
   noScope: true,
-  exit: function (node /*, parent */) {
+  exit: function (node) { /*, parent */
     if (this.isSpreadProperty()) {
       node.type = "Property";
       node.kind = "init";
@@ -186,10 +186,6 @@ var astTransformVisitor = {
     // flow
     if (this.isTypeCastExpression()) {
       return node.expression;
-    }
-
-    if (this.isFlow()) {
-      return this.dangerouslyRemove();
     }
 
     // modules
