@@ -43,7 +43,7 @@ $ npm install jscs babel-jscs # local
 {
   "esprima": "babel-jscs", // global
   "esprima": "./node_modules/babel-jscs", // local
-  "verbose": "true", // prints out rule names
+  "verbose": true, // prints out rule names
   "preset" : "airbnb"
 }
 ```
