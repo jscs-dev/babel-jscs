@@ -85,7 +85,7 @@ exports.attachComments = function (ast, comments, tokens) {
   }
 };
 
-exports.parse = function (code) {
+exports.parse = function (code, mode) {
   try {
     monkeypatch();
   } catch (err) {
@@ -95,7 +95,8 @@ exports.parse = function (code) {
 
   var opts = {
     locations: true,
-    ranges: true
+    ranges: true,
+    strictMode: mode === 'loose' ? false : true
   };
 
   var comments = opts.onComment = [];
