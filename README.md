@@ -8,7 +8,6 @@
 
 ### Known Issues
 > **Only works on master right now** - `package.json`: `"jscs": "jscs-dev/node-jscs#master",`
-- `validateQuoteMarks`
 
 ### Issues
 > If there's an issue, first check if you can reproduce with the regular parser (esprima) and the latest version of jscs and babel-jscs.
