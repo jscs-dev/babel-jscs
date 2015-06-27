@@ -96,7 +96,7 @@ exports.parse = function (code, mode) {
   var opts = {
     locations: true,
     ranges: true,
-    strictMode: mode === 'loose' ? false : true
+    strictMode: !mode || mode === "strict"
   };
 
   var comments = opts.onComment = [];
