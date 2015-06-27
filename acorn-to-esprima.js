@@ -57,7 +57,7 @@ exports.toToken = function (token) {
       pattern: token.value.pattern,
       flags: token.value.flags
     };
-    token.value = String(token.value.value);
+    token.value = source.slice(token.range[0], token.range[1]);
   }
 
   return token;
