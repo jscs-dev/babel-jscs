@@ -123,7 +123,7 @@ exports.parse = function (code, mode) {
   tokens.pop();
 
   // convert tokens
-  ast.tokens = acornToEsprima.toTokens(tokens);
+  ast.tokens = acornToEsprima.toTokens(tokens, code);
 
   // add comments
   ast.comments = comments;

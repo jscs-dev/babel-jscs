@@ -2,6 +2,8 @@ var traverse = require("babel-core").traverse;
 var tt       = require("babel-core").acorn.tokTypes;
 var t        = require("babel-core").types;
 
+var source = "";
+
 exports.toToken = function (token) {
   var type = token.type;
 
@@ -45,10 +47,10 @@ exports.toToken = function (token) {
     token.type = "Keyword";
   } else if (type === tt.num) {
     token.type = "Numeric";
-    token.value = String(token.value);
+    token.value = source.slice(token.range[0], token.range[1]);
   } else if (type === tt.string) {
     token.type = "String";
-    token.value = JSON.stringify(token.value);
+    token.value = source.slice(token.range[0], token.range[1]);
   } else if (type === tt.regexp) {
     token.type = "RegularExpression";
     token.regex = {
@@ -66,9 +68,10 @@ exports.toAST = function (ast) {
   traverse(ast, astTransformVisitor);
 };
 
-exports.toTokens = function (tokens) {
+exports.toTokens = function (tokens, code) {
   // transform tokens to type "Template"
   convertTemplateType(tokens);
+  source = code;
 
   return tokens.map(exports.toToken);
 };

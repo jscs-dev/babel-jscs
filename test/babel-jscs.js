@@ -163,6 +163,36 @@ describe("acorn-to-esprima", function () {
     });
   });
 
+  describe("literals", function () {
+    it("single quote string", function () {
+      parseAndAssertSame("var a = '1'");
+    });
+
+    it("float with decimal in front", function () {
+      parseAndAssertSame("var a = .5");
+    });
+
+    it("hex", function () {
+      parseAndAssertSame("var a = 0x10");
+    });
+
+    it("binary", function () {
+      parseAndAssertSame("var a = 0b10");
+    });
+
+    it("octal", function () {
+      parseAndAssertSame("var a = 0o10");
+    });
+
+    it("octal", function () {
+      parseAndAssertSame("var a = 0o10");
+    });
+
+    it("exponential notation", function () {
+      parseAndAssertSame("var a = 1e5");
+    });
+  });
+
   it("simple expression", function () {
     parseAndAssertSame("a = 1");
   });
