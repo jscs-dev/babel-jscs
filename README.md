@@ -2,12 +2,13 @@
 
 **babel-jscs** allows you to lint **ALL** valid Babel code with [JSCS](https://github.com/jscs-dev/node-jscs). Big thanks to @sebmck!
 
+> ### Use version > 2.0.0: `package.json`: `"jscs": "^2.0.0"`
+
 > Also check out the fantastic [babel-eslint](https://github.com/babel/babel-eslint) to lint using [ESLint](https://github.com/eslint/eslint). 
 
 **NOTE:** Please note that this is experimental and may have numerous bugs. It has been run against `ember.js` and `babel-core` with no errors (at the moment).
 
 ### Known Issues
-> **Only works on master right now** - `package.json`: `"jscs": "jscs-dev/node-jscs#master",`
 
 ### Issues
 > If there's an issue, first check if you can reproduce with the regular parser (esprima) and the latest version of jscs and babel-jscs.
