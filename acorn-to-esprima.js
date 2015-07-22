@@ -73,7 +73,9 @@ exports.toTokens = function (tokens, code) {
   convertTemplateType(tokens);
   source = code;
 
-  return tokens.map(exports.toToken);
+  return tokens.filter(function (token) {
+    return token.type !== "CommentLine" && token.type !== "CommentBlock";
+  }).map(exports.toToken);
 };
 
 function convertTemplateType(tokens) {

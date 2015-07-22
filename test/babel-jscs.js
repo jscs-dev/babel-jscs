@@ -39,7 +39,7 @@ function parseAndAssertSame(code, parser, parserName) {
     loc: true,
     range: true,
     comment: true,
-    attachComment: true,
+    attachComments: true,
     sourceType: "module"
   });
   var acornAST = babelJSCS.parse(code);
@@ -249,33 +249,32 @@ describe("acorn-to-esprima", function () {
     parseAndAssertSame("export { foo as bar };");
   });
 
-  // comment out tests since had to remove attachComment method of estraverse - #10
-  // it("empty program with line comment", function () {
-  //   parseAndAssertSame("// single comment");
-  // });
+  it("empty program with line comment", function () {
+    parseAndAssertSame("// single comment");
+  });
 
-  // it("empty program with block comment", function () {
-  //   parseAndAssertSame("  /* multiline\n * comment\n*/");
-  // });
+  it("empty program with block comment", function () {
+    parseAndAssertSame("  /* multiline\n * comment\n*/");
+  });
 
-  // it("line comments", function () {
-  //   parseAndAssertSame([
-  //     "  // single comment",
-  //     "var foo = 15; // comment next to statement",
-  //     "// second comment after statement"
-  //   ].join("\n"));
-  // });
+  it("line comments", function () {
+    parseAndAssertSame([
+      "  // single comment",
+      "var foo = 15; // comment next to statement",
+      "// second comment after statement"
+    ].join("\n"));
+  });
 
-  // it("block comments", function () {
-  //   parseAndAssertSame([
-  //     "  /* single comment */ ",
-  //     "var foo = 15; /* comment next to statement */",
-  //     "/*",
-  //     " * multiline",
-  //     " * comment",
-  //     " */"
-  //   ].join("\n"));
-  // });
+  it("block comments", function () {
+    parseAndAssertSame([
+      "  /* single comment */ ",
+      "var foo = 15; /* comment next to statement */",
+      "/*",
+      " * multiline",
+      " * comment",
+      " */"
+    ].join("\n"));
+  });
 
   it("null", function () {
     parseAndAssertSame("null");
