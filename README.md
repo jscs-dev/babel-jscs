@@ -2,7 +2,9 @@
 
 **babel-jscs** allows you to lint **ALL** valid Babel code with [JSCS](https://github.com/jscs-dev/node-jscs). Big thanks to @sebmck!
 
-> ### Use version > 2.0.0: `package.json`: `"jscs": "^2.0.0"`
+> ### This package will be used in jscs itself. The recommended way to use it is to use use the `esnext` option.
+
+> Usage: `jscs . --esnext` or add `"esnext": true` to your `.jscsrc`
 
 > Also check out the fantastic [babel-eslint](https://github.com/babel/babel-eslint) to lint using [ESLint](https://github.com/eslint/eslint). 
 
@@ -30,9 +32,11 @@ columns is also retained so you can track down errors with ease.
 
 ### Install
 
+> Since jscs 2.0 isn't released you will need to `npm i jscs-dev/node-jscs#c5adeba`
+
 ```sh
-$ npm install -g jscs babel-jscs # global
-$ npm install jscs babel-jscs # local
+$ npm i -g jscs # global
+$ npm i jscs # local
 ```
 
 ### Setup
@@ -41,10 +45,7 @@ $ npm install jscs babel-jscs # local
 
 ```js
 {
-  "esprima": "babel-jscs", // global
-  "esprima": "./node_modules/babel-jscs", // local
-  "verbose": true, // prints out rule names
-  "preset" : "airbnb"
+  "esnext": true
 }
 ```
 
@@ -54,6 +55,8 @@ Check out the [JSCS docs](http://jscs.info/rules.html) for all possible rules.
 
 ```sh
 $ jscs your-files-here
+# if you didn't add esnext to your config
+$ jscs your-files-here --esnext
 ```
 
 [travis-url]: https://travis-ci.org/jscs-dev/babel-jscs
