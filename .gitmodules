@@ -1,3 +1,0 @@
-[submodule "jscs"]
-	path = jscs
-	url = https://github.com/jscs-dev/node-jscs

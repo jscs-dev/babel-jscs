@@ -12,8 +12,6 @@
     "lodash.assign": "^3.2.0"
   },
   "scripts": {
-    "bootstrap": "git submodule update --init && cd jscs && npm install",
-    "jscs": "cd jscs && mocha --colors",
     "test": "mocha",
     "lint": "./node_modules/.bin/jscs test index.js acorn-to-esprima.js",
     "travis": "npm test && npm run lint"
