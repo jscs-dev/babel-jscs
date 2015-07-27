@@ -6,6 +6,7 @@ var source = "";
 
 exports.toToken = function (token) {
   var type = token.type;
+  token.range = [token.start, token.end];
 
   if (type === tt.name) {
     token.type = "Identifier";
@@ -65,6 +66,7 @@ exports.toToken = function (token) {
 
 exports.toAST = function (ast) {
   ast.sourceType = "module";
+  ast.range = [ast.start, ast.end];
   traverse(ast, astTransformVisitor);
 };
 
@@ -120,7 +122,8 @@ function convertTemplateType(tokens) {
     var templateToken = {
       type: "Template",
       value: createTemplateValue(start, end),
-      range: [tokens[start].start, tokens[end].end],
+      start: tokens[start].start,
+      end: tokens[end].end,
       loc: {
         start: tokens[start].loc.start,
         end: tokens[end].loc.end
@@ -175,6 +178,12 @@ function convertTemplateType(tokens) {
 
 var astTransformVisitor = {
   noScope: true,
+  enter: function (node) {
+    node.range = [node.start, node.end];
+
+    // private var to track original node type
+    node._babelType = node.type;
+  },
   exit: function (node) { /*, parent */
     if (this.isSpreadProperty()) {
       node.type = "Property";
