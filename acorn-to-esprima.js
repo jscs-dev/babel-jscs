@@ -186,24 +186,11 @@ var astTransformVisitor = {
   },
   exit: function (node) { /*, parent */
     if (this.isSpreadProperty()) {
-      node.type = "Property";
-      node.kind = "init";
-      node.computed = true;
+      node.type = "SpreadProperty";
       node.key = node.value = node.argument;
-      delete node.argument;
-    }
-
-    if (this.isRestElement()) {
-      return node.argument;
-    }
-
-    // flow
-    if (this.isTypeCastExpression()) {
-      return node.expression;
     }
 
     // modules
-
     if (this.isImportDeclaration()) {
       delete node.isType;
     }
@@ -224,11 +211,6 @@ var astTransformVisitor = {
     }
 
     // classes
-
-    if (this.isReferencedIdentifier({ name: "super" })) {
-      return t.inherits(t.thisExpression(), node);
-    }
-
     if (this.isClassProperty()) {
       delete node.key;
     }
@@ -237,7 +219,6 @@ var astTransformVisitor = {
 
     if (this.isFunction()) {
       if (node.async) node.generator = true;
-      delete node.async;
     }
 
     if (this.isAwaitExpression()) {
