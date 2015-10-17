@@ -64,7 +64,7 @@ describe("verify", function () {
     verifyAndAssertMessages(
       "var a = [1,2,3];",
       { "requireTrailingComma": true },
-      ["1:14 Missing comma before closing  bracket"]
+      ["1:14 Missing comma before closing bracket"]
     );
   });
 
