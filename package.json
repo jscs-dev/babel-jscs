@@ -8,7 +8,10 @@
     "url": "https://github.com/jscs-dev/babel-jscs.git"
   },
   "dependencies": {
-    "babel-core": "~5.8.3",
+    "acorn-to-esprima": "^2.0.2",
+    "babel-traverse": "^6.2.0",
+    "babel-types": "^6.3.0",
+    "babylon": "^6.3.0",
     "lodash.assign": "^3.2.0"
   },
   "scripts": {
@@ -28,9 +31,9 @@
   ],
   "homepage": "https://github.com/jscs-dev/babel-jscs",
   "devDependencies": {
-    "jscs": "jscs-dev/node-jscs#master",
-    "esprima": "^2.2.0",
+    "jscs": "^2.6.0",
+    "esprima": "^2.7.0",
     "esprima-fb": "^15001.1.0-dev-harmony-fb",
-    "mocha": "^2.2.5"
+    "mocha": "^2.3.4"
   }
 }

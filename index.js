@@ -1,58 +1,33 @@
-var acornToEsprima = require("./acorn-to-esprima");
-var parse          = require("babel-core").parse;
+var acornToEsprima = require("acorn-to-esprima");
+var parse          = require("babylon").parse;
+var t              = require("babel-types");
+var tt             = require("babylon").tokTypes;
+var traverse       = require("babel-traverse").default;
 
-exports.attachComments = function (ast, comments, tokens) {
-  if (comments.length) {
-    var firstComment = comments[0];
-    var lastComment = comments[comments.length - 1];
-    // fixup program start
-    if (!tokens.length) {
-      // if no tokens, the program starts at the end of the last comment
-      ast.start = lastComment.end;
-      ast.loc.start.line = lastComment.loc.end.line;
-      ast.loc.start.column = lastComment.loc.end.column;
-    } else if (firstComment.start < tokens[0].start) {
-      // if there are comments before the first token, the program starts at the first token
-      var token = tokens[0];
-      ast.start = token.start;
-      ast.loc.start.line = token.loc.start.line;
-      ast.loc.start.column = token.loc.start.column;
-
-      // estraverse do not put leading comments on first node when the comment
-      // appear before the first token
-      if (ast.body.length) {
-        var node = ast.body[0];
-        node.leadingComments = [];
-        var firstTokenStart = token.start;
-        var len = comments.length;
-        for (var i = 0; i < len && comments[i].start < firstTokenStart; i++) {
-          node.leadingComments.push(comments[i]);
-        }
-      }
-    }
-    // fixup program end
-    if (tokens.length) {
-      var lastToken = tokens[tokens.length - 1];
-      if (lastComment.end > lastToken.end) {
-        // If there is a comment after the last token, the program ends at the
-        // last token and not the comment
-        ast.end = lastToken.end;
-        ast.loc.end.line = lastToken.loc.end.line;
-        ast.loc.end.column = lastToken.loc.end.column;
-      }
-    }
-  }
-};
-
-exports.parse = function (code, mode) {
+exports.parse = function (code) {
   var opts = {
-    locations: true,
-    ranges: true,
-    strictMode: !mode || mode === "strict"
+    sourceType: "module",
+    strictMode: true,
+    allowImportExportEverywhere: false, // consistent with espree
+    allowReturnOutsideFunction: true,
+    allowSuperOutsideMethod: true,
+    plugins: [
+        "flow",
+        "jsx",
+        "asyncFunctions",
+        "asyncGenerators",
+        "classConstructorCall",
+        "classProperties",
+        "decorators",
+        "doExpressions",
+        "exponentiationOperator",
+        "exportExtensions",
+        "functionBind",
+        "functionSent",
+        "objectRestSpread",
+        "trailingFunctionCommas"
+    ]
   };
-
-  var comments = opts.onComment = [];
-  var tokens = opts.onToken = [];
 
   var ast;
   try {
@@ -63,7 +38,7 @@ exports.parse = function (code, mode) {
       err.column = err.loc.column;
 
       // remove trailing "(LINE:COLUMN)" acorn message and add in esprima syntax error message start
-      err.message = "Line X: " + err.message.replace(/ \((\d+):(\d+)\)$/, "");
+      err.message = "Line " + err.lineNumber + ": " + err.message.replace(/ \((\d+):(\d+)\)$/, "");
     }
 
     throw err;
@@ -72,25 +47,30 @@ exports.parse = function (code, mode) {
   // remove EOF token, eslint doesn't use this for anything and it interferes with some rules
   // see https://github.com/babel/babel-eslint/issues/2 for more info
   // todo: find a more elegant way to do this
-  tokens.pop();
+  ast.tokens.pop();
 
   // convert tokens
-  ast.tokens = acornToEsprima.toTokens(tokens, code);
+  ast.tokens = acornToEsprima.toTokens(ast.tokens, tt, code);
 
   // add comments
-  for (var i = 0; i < comments.length; i++) {
-    var comment = comments[i];
-    if (comment.type === "CommentBlock") {
-      comment.type = "Block";
-    } else if (comment.type === "CommentLine") {
-      comment.type = "Line";
-    }
-  }
-  ast.comments = comments;
-  exports.attachComments(ast, comments, ast.tokens);
+  acornToEsprima.convertComments(ast.comments);
 
   // transform esprima and acorn divergent nodes
-  acornToEsprima.toAST(ast);
+  acornToEsprima.toAST(ast, traverse, code);
+
+  // ast.program.tokens = ast.tokens;
+  // ast.program.comments = ast.comments;
+  // ast = ast.program;
+
+  // remove File
+  ast.type = 'Program';
+  ast.sourceType = ast.program.sourceType;
+  ast.directives = ast.program.directives;
+  ast.body = ast.program.body;
+  delete ast.program;
+  delete ast._paths;
+
+  acornToEsprima.attachComments(ast, ast.comments, ast.tokens);
 
   return ast;
-};
+}
