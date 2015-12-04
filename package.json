@@ -16,7 +16,7 @@
   },
   "scripts": {
     "test": "mocha",
-    "lint": "./node_modules/.bin/jscs test index.js acorn-to-esprima.js",
+    "lint": "./node_modules/.bin/jscs test index.js",
     "travis": "npm test && npm run lint"
   },
   "author": "Henry Zhu <hi@henryzoo.com>",

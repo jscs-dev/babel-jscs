@@ -44,7 +44,7 @@ exports.parse = function (code) {
     throw err;
   }
 
-  // remove EOF token, eslint doesn't use this for anything and it interferes with some rules
+  // remove EOF token, eslint doesn"t use this for anything and it interferes with some rules
   // see https://github.com/babel/babel-eslint/issues/2 for more info
   // todo: find a more elegant way to do this
   ast.tokens.pop();
@@ -63,7 +63,7 @@ exports.parse = function (code) {
   // ast = ast.program;
 
   // remove File
-  ast.type = 'Program';
+  ast.type = "Program";
   ast.sourceType = ast.program.sourceType;
   ast.directives = ast.program.directives;
   ast.body = ast.program.body;
